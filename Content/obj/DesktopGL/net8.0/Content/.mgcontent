@@ -4,7 +4,7 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/rabbi/Documents/GitHub/MonoPlayground/Content/7wells_icon.jpg</File>
+    <File>C:/Users/rabbi/Documents/GitHub/7Wells_Monogame/Content/7wells_icon.jpg</File>
   </SourceFiles>
   <DestFiles>
     <File xsi:nil="true" />
