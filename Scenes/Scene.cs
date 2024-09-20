@@ -9,7 +9,7 @@ public class Scene {
 
     public Scene(SceneTag tag, ContentManager contentManager) {
         this.tag = tag;
-        initialObjectPlacements = SceneObjectsInit.GetGameObjectByScene(tag, contentManager);
+        initialObjectPlacements = SceneObjectsInit.LoadGameObjectsForScene(tag, contentManager);
     }
 
     public SceneTag Tag() {
@@ -22,14 +22,24 @@ public class Scene {
 
     public void DrawAllObjects(SpriteBatch spriteBatch) {
         foreach (GameObject gameObject in initialObjectPlacements) {
-            gameObject.Draw(spriteBatch);
+            gameObject.DrawIfHasTexture(spriteBatch);
         }
     }
 
-    public Option<GameObject> GetObjectByTextureName(string textureName) {
+    public Option<GameObject> GetGameObject(GameObjectType gameObjectType, int id) {
+        return GetGameObject(gameObjectType, Option.Some(id));
+    }
+
+    public Option<GameObject> GetGameObject(GameObjectType gameObjectType) {
+        return GetGameObject(gameObjectType, Option.None);
+    }
+
+    public Option<GameObject> GetGameObject(GameObjectType gameObjectType, Option<int> id) {
         foreach (GameObject gameObject in initialObjectPlacements) {
-            if (gameObject.textureName == textureName) {
-                return Option.Some(gameObject);
+            if (gameObject.type == gameObjectType) {
+                if (!id.HasValue || gameObject.id.Equals(id)) {
+                    return Option.Some(gameObject);
+                }
             }
         }
         return Option.None;

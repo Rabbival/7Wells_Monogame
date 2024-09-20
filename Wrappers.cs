@@ -1,9 +1,9 @@
 using System;
+using System.Collections.Generic;
 
 namespace Utils
 {
-    public struct Option<T>
-    {
+    public struct Option<T> : IEquatable<Option<T>> {
         public T Value { get; set; }
         public bool HasValue { get; set; }
 
@@ -15,6 +15,15 @@ namespace Utils
 
         public Option(T value) : this(value, true)
         { }
+
+        public bool Equals(Option<T> other) =>
+        !HasValue && !other.HasValue || (HasValue && other.HasValue && EqualityComparer<T>.Default.Equals(Value, other.Value));
+
+        public override bool Equals(object obj) =>
+            obj is Option<T> other && Equals(other);
+
+        public override int GetHashCode() =>
+            HasValue ? Value.GetHashCode() : 0;
 
         public TOut Match<TOut>(Func<T, TOut> some, Func<TOut> none) =>
             HasValue ? some(Value) : none();
