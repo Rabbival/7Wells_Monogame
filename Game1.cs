@@ -2,14 +2,15 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Utils;
 
 namespace MonoPlayground;
 
 public class Game1 : Game
 {
     public GraphicsDeviceManager graphicsManager;
-    private SpriteBatch _spriteBatch;
-    Texture2D logoSprite;
+    public SpriteBatch spriteBatch;
+    public SceneTag activeSceneTag;
 
     public Game1()
     {
@@ -20,14 +21,21 @@ public class Game1 : Game
 
     protected override void Initialize()
     {
+        activeSceneTag = SceneTag.TitleScreen;
         base.Initialize();
     }
 
     protected override void LoadContent()
     {
-        _spriteBatch = new SpriteBatch(GraphicsDevice);
-        logoSprite = Content.Load<Texture2D>("7wells_icon");
-        InitializeApp.InitializeViewport(graphicsManager, logoSprite.Bounds.Width, logoSprite.Bounds.Height);
+        Option<Scene> maybeTitleScene;
+        spriteBatch = new SpriteBatch(GraphicsDevice);
+        SceneManager.AddScene(new Scene(SceneTag.TitleScreen, Content));
+        maybeTitleScene = SceneManager.GetSceneByTag(SceneTag.TitleScreen);
+        if (maybeTitleScene.HasValue) {
+            InitializeApp.InitializeViewportToLogoSize(maybeTitleScene.Value, graphicsManager);
+        }else{
+            Console.WriteLine("Error! Title Scene not found");
+        }
     }
 
     protected override void Update(GameTime gameTime)
@@ -44,9 +52,9 @@ public class Game1 : Game
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
-        _spriteBatch.Begin();
-        _spriteBatch.Draw(logoSprite, new Vector2(0, 0), Color.White);
-        _spriteBatch.End();
+        spriteBatch.Begin();
+        SceneManager.DrawScene(activeSceneTag, spriteBatch);
+        spriteBatch.End();
 
         base.Draw(gameTime);
     }
