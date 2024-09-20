@@ -4,7 +4,12 @@ using Microsoft.Xna.Framework.Graphics;
 using Utils;
 
 public static class SceneManager {
+    public static SceneTag activeSceneTag;
     private static List<Scene> scenes = new List<Scene>();
+
+    public static void DrawActiveScene(SpriteBatch spriteBatch) {
+        DrawScene(activeSceneTag, spriteBatch);
+    }
 
     public static void DrawScene(SceneTag sceneTag, SpriteBatch spriteBatch){
         Option<Scene> maybeScene = GetSceneByTag(sceneTag);

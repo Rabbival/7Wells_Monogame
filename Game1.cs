@@ -10,7 +10,6 @@ public class Game1 : Game
 {
     public GraphicsDeviceManager graphicsManager;
     public SpriteBatch spriteBatch;
-    public SceneTag activeSceneTag;
 
     public Game1()
     {
@@ -21,7 +20,7 @@ public class Game1 : Game
 
     protected override void Initialize()
     {
-        activeSceneTag = SceneTag.TitleScreen;
+        SceneManager.activeSceneTag = SceneTag.TitleScreen;
         base.Initialize();
     }
 
@@ -53,7 +52,7 @@ public class Game1 : Game
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
         spriteBatch.Begin();
-        SceneManager.DrawScene(activeSceneTag, spriteBatch);
+        SceneManager.DrawActiveScene(spriteBatch);
         spriteBatch.End();
 
         base.Draw(gameTime);
