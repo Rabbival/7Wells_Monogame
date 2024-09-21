@@ -1,11 +1,20 @@
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Utils;
 
 public static class SceneManager {
-    public static SceneTag activeSceneTag;
+    private static SceneTag activeSceneTag;
     private static List<Scene> scenes = new List<Scene>();
+
+    public static void SetActiveScene(SceneTag sceneTag) {
+        activeSceneTag = sceneTag;
+        CurrentInputConfig.SetActiveKeyboardSchemeIfAssigned(sceneTag);
+    }
+
+    public static SceneTag GetActiveScene() {
+        return activeSceneTag;
+    }
 
     public static void DrawActiveScene(SpriteBatch spriteBatch) {
         DrawScene(activeSceneTag, spriteBatch);
@@ -29,7 +38,9 @@ public static class SceneManager {
         return Option.None;
     }
 
-    public static void AddScene(Scene scene) {
-        scenes.Add(scene);
+    public static void AddScenes(ContentManager contentManager) {
+        foreach (SceneTag sceneTag in Enum.GetValues(typeof(SceneTag))) {
+            scenes.Add(new Scene(sceneTag, contentManager));
+        }
     }
 }

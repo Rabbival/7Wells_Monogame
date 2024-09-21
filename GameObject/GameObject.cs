@@ -1,6 +1,5 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Utils;
 
 public partial class GameObject {
     public GameObjectType type;

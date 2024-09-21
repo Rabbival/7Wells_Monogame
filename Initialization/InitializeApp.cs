@@ -2,10 +2,6 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Utils;
-
-
-namespace MonoPlayground;
 
 public static class InitializeApp
 {
