@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Utils;
 
 namespace MonoPlayground;
 
@@ -10,6 +9,7 @@ public class Game1 : Game
 {
     public GraphicsDeviceManager graphicsManager;
     public SpriteBatch spriteBatch;
+
 
     public Game1()
     {
@@ -20,7 +20,7 @@ public class Game1 : Game
 
     protected override void Initialize()
     {
-        SceneManager.activeSceneTag = SceneTag.TitleScreen;
+        SceneManager.SetActiveScene(SceneTag.TitleScreen);
         base.Initialize();
     }
 
@@ -28,7 +28,7 @@ public class Game1 : Game
     {
         Option<Scene> maybeTitleScene;
         spriteBatch = new SpriteBatch(GraphicsDevice);
-        SceneManager.AddScene(new Scene(SceneTag.TitleScreen, Content));
+        SceneManager.AddScenes(Content);
         maybeTitleScene = SceneManager.GetSceneByTag(SceneTag.TitleScreen);
         if (maybeTitleScene.HasValue) {
             InitializeApp.InitializeViewportToLogoSize(maybeTitleScene.Value, graphicsManager);
@@ -42,7 +42,7 @@ public class Game1 : Game
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
-        // TODO: Add your update logic here
+        InputManager.ListenForInputAndSendEvents();
 
         base.Update(gameTime);
     }
